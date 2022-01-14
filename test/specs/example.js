@@ -1,8 +1,8 @@
 describe('Verify main functionality of the mailbox', function() {
 
-  var addressText = 'test1234512345@yopmail.com';
-  var subjectText = 'The email testing!';
-  var bodyText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.';
+    var addressText = 'test1234512345@yopmail.com';
+    var subjectText = 'The email testing!';
+    var bodyText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.';
 
   it('should login to the mailbox',async function() {
     await browser.url ("https://www.yahoo.com/");

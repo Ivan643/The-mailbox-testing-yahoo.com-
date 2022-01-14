@@ -1,1 +1,4 @@
-# The-mailbox-testing-yahoo.com-
+# Installation
+npm instal
+# Run unit tests
+npm test

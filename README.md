@@ -1,4 +1,4 @@
 # Installation
-npm instal
+npm install
 # Run unit tests
 npm test

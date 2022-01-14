@@ -56,7 +56,6 @@ describe('Verify main functionality of the mailbox', function() {
     await expect(subject).toHaveValueContaining(subjectText);
     var body = await $('div[dir*="ltr"]');
     await expect(body).toHaveTextContaining(bodyText);
-
   });
 
   it('should send the email',async function() {

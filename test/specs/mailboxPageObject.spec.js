@@ -1,60 +1,68 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
-const MailboxPage = require('../pages/mailbox.page');
+const StartPage = require('../pages/start.page');
+const LoginPage = require('../pages/login.page');
+const HomePage = require('../pages/home.page');
+const InboxPage = require('../pages/inbox.page');
+const ComposePage = require('../pages/compose.page');
+const DraftsPage = require('../pages/drafts.page');
+const EditPage = require('../pages/edit.page');
+const SentPage = require('../pages/sent.page');
 
 describe('Verify main functionality of the mailbox', () => {
   it('should login to the mailbox', async () => {
-    await MailboxPage.open();
-    await MailboxPage.signIn();
-    await MailboxPage.enterUsername();
-    await MailboxPage.next();
-    await MailboxPage.enterPassword();
-    await MailboxPage.next();
+    await StartPage.open();
+    await StartPage.loginButton.click();
+    await LoginPage.inputEmailField.setValue('testmailbox123123@yahoo.com');
+    await LoginPage.nextButton.click();
+    await LoginPage.inputPasswordField.setValue('automatedTestingIsAwesome');
+    await LoginPage.nextButton.click();
   });
 
   it('should verify that the login was successfull', async () => {
-    await expect(MailboxPage.labelOfProfile).toExist();
+    await expect(HomePage.labelOfProfile).toExist();
   });
 
   it('should create a new email and should save it to the drafts folder', async () => {
-    await MailboxPage.mail();
-    await MailboxPage.compose();
-    await MailboxPage.enterAddress();
-    await MailboxPage.enterSubject();
-    await MailboxPage.enterBody();
-    await MailboxPage.saveInDrafts();
+    await HomePage.mailButton.click();
+    await InboxPage.composeButton.click();
+    await ComposePage.inputAddressField.setValue('test1234512345@yopmail.com');
+    await ComposePage.inputSubjectField.setValue('The email testing!');
+    await ComposePage.inputBodyField.setValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+    await ComposePage.draftsFolderButton.click();
   });
 
   it('should verify that the email presents in the drafts folder', async () => {
-    await expect(MailboxPage.draftEmail).toExist();
+    await expect(DraftsPage.draftEmail).toExist();
   });
 
   it('should verify the draft content', async () => {
-    await MailboxPage.openDraft();
-    await expect(MailboxPage.emailAddress).toHaveTextContaining('test1234512345@yopmail.com');
-    await expect(MailboxPage.subject).toHaveValueContaining('The email testing!');
-    await expect(MailboxPage.body).toHaveTextContaining('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+    await DraftsPage.draftEmailList.click();
+    await expect(EditPage.emailAddress).toHaveTextContaining('test1234512345@yopmail.com');
+    await expect(EditPage.subject).toHaveValueContaining('The email testing!');
+    await expect(EditPage.body).toHaveTextContaining('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
   });
 
   it('should send the email', async () => {
-    await MailboxPage.send();
+    await EditPage.sendButton.click();
   });
 
   it('should verify that the email has removed from the drafts folder', async () => {
-    await expect(MailboxPage.draftEmailList).toExist();
+    await expect(DraftsPage.draftEmailList).toExist();
   });
 
   it('should verify that the email is in Sent folder', async () => {
-    await MailboxPage.openSentFolder();
-    await expect(MailboxPage.sentEmail).toExist();
+    await DraftsPage.sentFolderButton.click();
+    await expect(SentPage.sentEmail).toExist();
   });
 
   it('should logout from the account', async () => {
-    await MailboxPage.openProfileItem();
-    await MailboxPage.logout();
+    await SentPage.profileItem.moveTo();
+    await SentPage.logout();
   });
 
   it('should verify that the logout was successfull', async () => {
-    await expect(MailboxPage.loginButton).toExist();
+    await expect(StartPage.loginButton).toExist();
   });
 });

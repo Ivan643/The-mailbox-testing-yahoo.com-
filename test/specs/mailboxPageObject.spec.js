@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 
 const StartPage = require('../pages/start.page');
 const LoginPage = require('../pages/login.page');
@@ -14,8 +12,10 @@ describe('Verify main functionality of the mailbox', () => {
   it('should login to the mailbox', async () => {
     await StartPage.open();
     await StartPage.loginButton.click();
+    await expect(LoginPage.inputEmailField).toExist();
     await LoginPage.inputEmailField.setValue('testmailbox123123@yahoo.com');
     await LoginPage.nextButton.click();
+    await expect(LoginPage.inputPasswordField).toExist();
     await LoginPage.inputPasswordField.setValue('automatedTestingIsAwesome');
     await LoginPage.nextButton.click();
   });
@@ -26,7 +26,11 @@ describe('Verify main functionality of the mailbox', () => {
 
   it('should create a new email and should save it to the drafts folder', async () => {
     await HomePage.mailButton.click();
+    await expect(InboxPage.composeButton).toExist();
     await InboxPage.composeButton.click();
+    await expect(ComposePage.inputAddressField).toExist();
+    await expect(ComposePage.inputSubjectField).toExist();
+    await expect(ComposePage.inputBodyField).toExist();
     await ComposePage.inputAddressField.setValue('test1234512345@yopmail.com');
     await ComposePage.inputSubjectField.setValue('The email testing!');
     await ComposePage.inputBodyField.setValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
@@ -59,6 +63,7 @@ describe('Verify main functionality of the mailbox', () => {
 
   it('should logout from the account', async () => {
     await SentPage.profileItem.moveTo();
+    await expect(SentPage.logoutButton).toExist();
     await SentPage.logout();
   });
 

@@ -1,15 +1,17 @@
-/* eslint-disable no-undef */
-/* eslint-disable linebreak-style */
-/* eslint-disable class-methods-use-this */
-
 const Page = require('./page');
 
+const selectors = {
+  inputEmailField: '//*[@id="login-username"]',
+  nextButton: '#login-signin',
+  inputPasswordField: '#login-passwd'
+};
+
 class LoginPage extends Page {
-  get inputEmailField() { return $('//*[@id="login-username"]'); }
+  get inputEmailField() { return $(selectors.inputEmailField); }
 
-  get nextButton() { return $('#login-signin'); }
+  get nextButton() { return $(selectors.nextButton); }
 
-  get inputPasswordField() { return $('#login-passwd'); }
+  get inputPasswordField() { return $(selectors.inputPasswordField); }
 }
 
 module.exports = new LoginPage();

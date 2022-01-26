@@ -1,17 +1,20 @@
-/* eslint-disable no-undef */
-/* eslint-disable linebreak-style */
-/* eslint-disable class-methods-use-this */
-
 const Page = require('./page');
 
+const selectors = {
+  inputAddressField: '#message-to-field',
+  inputSubjectField: 'input[data-test-id*="compose-subject"]',
+  inputBodyField: '//*[@id="editor-container"]/div[1]',
+  draftsFolderButton: 'li div[data-test-folder-container*="Draft"]'
+};
+
 class ComposePage extends Page {
-  get inputAddressField() { return $('#message-to-field'); }
+  get inputAddressField() { return $(selectors.inputAddressField); }
 
-  get inputSubjectField() { return $('input[data-test-id*="compose-subject"]'); }
+  get inputSubjectField() { return $(selectors.inputSubjectField); }
 
-  get inputBodyField() { return $('//*[@id="editor-container"]/div[1]'); }
+  get inputBodyField() { return $(selectors.inputBodyField); }
 
-  get draftsFolderButton() { return $('li div[data-test-folder-container*="Draft"]'); }
+  get draftsFolderButton() { return $(selectors.draftsFolderButton); }
 }
 
 module.exports = new ComposePage();

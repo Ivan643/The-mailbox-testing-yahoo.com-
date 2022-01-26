@@ -1,11 +1,11 @@
-/* eslint-disable no-undef */
-/* eslint-disable linebreak-style */
-/* eslint-disable class-methods-use-this */
-
 const Page = require('./page');
 
+const selectors = {
+  composeButton: 'a[href*="/d/compose/"]'
+};
+
 class InboxPage extends Page {
-  get composeButton() { return $('a[href*="/d/compose/"]'); }
+  get composeButton() { return $(selectors.composeButton); }
 }
 
 module.exports = new InboxPage();

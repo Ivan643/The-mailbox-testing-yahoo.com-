@@ -1,13 +1,14 @@
-/* eslint-disable no-undef */
-/* eslint-disable linebreak-style */
-/* eslint-disable class-methods-use-this */
-
 const Page = require('./page');
 
-class HomePage extends Page {
-  get labelOfProfile() { return $('#ybarAccountMenuOpener'); }
+const selectors = {
+  labelOfProfile: '#ybarAccountMenuOpener',
+  mailButton: '#ybarMailLink'
+};
 
-  get mailButton() { return $('#ybarMailLink'); }
+class HomePage extends Page {
+  get labelOfProfile() { return $(selectors.labelOfProfile); }
+
+  get mailButton() { return $(selectors.mailButton); }
 }
 
 module.exports = new HomePage();

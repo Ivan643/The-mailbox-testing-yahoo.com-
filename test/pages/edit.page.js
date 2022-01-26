@@ -1,17 +1,20 @@
-/* eslint-disable no-undef */
-/* eslint-disable linebreak-style */
-/* eslint-disable class-methods-use-this */
-
 const Page = require('./page');
 
+const selectors = {
+  emailAddress: '.P_oRhLS',
+  subject: 'input[data-test-id*="compose-subject"]',
+  body: 'div[dir*="ltr"]',
+  sendButton: 'button[data-test-id*="compose-send-button"]'
+};
+
 class EditPage extends Page {
-  get emailAddress() { return $('.P_oRhLS'); }
+  get emailAddress() { return $(selectors.emailAddress); }
 
-  get subject() { return $('input[data-test-id*="compose-subject"]'); }
+  get subject() { return $(selectors.subject); }
 
-  get body() { return $('div[dir*="ltr"]'); }
+  get body() { return $(selectors.body); }
 
-  get sendButton() { return $('button[data-test-id*="compose-send-button"]'); }
+  get sendButton() { return $(selectors.sendButton); }
 }
 
 module.exports = new EditPage();

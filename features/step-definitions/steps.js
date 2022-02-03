@@ -3,106 +3,167 @@ const { Given, When, Then } = require('@wdio/cucumber-framework');
 
 const expectChai = require('chai').expect;
 
-const StartPage = require('../pageobjects/start.page');
-const LoginPage = require('../pageobjects/login.page');
-const HomePage = require('../pageobjects/home.page');
-const InboxPage = require('../pageobjects/inbox.page');
-const ComposePage = require('../pageobjects/compose.page');
-const DraftsPage = require('../pageobjects/drafts.page');
-const EditPage = require('../pageobjects/edit.page');
-const SentPage = require('../pageobjects/sent.page');
+const startPage = require('../pageobjects/start.page');
+const loginPage = require('../pageobjects/login.page');
+const homePage = require('../pageobjects/home.page');
+const inboxPage = require('../pageobjects/inbox.page');
+const composePage = require('../pageobjects/compose.page');
+const draftsPage = require('../pageobjects/drafts.page');
+const editPage = require('../pageobjects/edit.page');
+const sentPage = require('../pageobjects/sent.page');
 
-Given(/^I am on the Start page$/, async () => {
-  await StartPage.open('https://yahoo.com');
+// Scenario 01.
+Given(/^I am on the Start page as an unuthorized user$/, async () => {
+  await startPage.open('https://yahoo.com');
 });
 
-When(/^I click the SignIn button$/, async () => {
-  await StartPage.loginButton.click();
+When(/^I click the Sign In button$/, async () => {
+  await startPage.loginButton.click();
 });
 
 Then(/^I should see a Login page$/, async () => {
   expectChai(await browser.getUrl()).to.include('https://login.yahoo.com');
 });
 
+// Scenario 02.
 Given(/^I am on the Login page$/, async () => {
-  await expect(await LoginPage.inputEmailField).toExist();
+  await loginPage.open('https://login.yahoo.com')
 });
 
-When(/^I login to the mailbox account$/, async () => {
-  await LoginPage.login();
+When(/^I enter the mailbox name 'testmailbox123123@yahoo.com'$/, async () => {
+  await loginPage.inputEmailField.setValue('testmailbox123123@yahoo.com');
+  expectChai(await loginPage.inputEmailField.getValue()).to.be.equal('testmailbox123123@yahoo.com');
+  await loginPage.nextButton.click();
+});
+
+Then(/^I should see a Login page with a password field$/, async () => {
+  await expect(await loginPage.inputPasswordField).toExist();
+});
+
+// Scenario 03.
+When(/^I enter the password 'automatedTestingIsAwesome'$/, async () => {
+  await loginPage.inputPasswordField.setValue('automatedTestingIsAwesome');
+  expectChai(await loginPage.inputPasswordField.getValue()).to.be.equal('automatedTestingIsAwesome');
+  await loginPage.nextButton.click();
 });
 
 Then(/^I should see a Home page$/, async () => {
-  expectChai(await browser.getUrl()).to.include('https://www.yahoo.com');
+  await expect(await homePage.labelOfProfile).toExist();
 });
 
-Given(/^I am on the Home page$/, async () => {
-  await expect(await HomePage.labelOfProfile).toExist();
+// Scenario 04.
+Given(/^I am on the Home page as an authorized user$/, async () => {
+  await homePage.open('https://www.yahoo.com');
+  await startPage.loginButton.click();
+  await loginPage.login();
 });
 
-When(/^I create the email and save it as a draft$/, async () => {
-  await HomePage.mailButton.click();
-  await expect(await InboxPage.composeButton).toExist();
-  await InboxPage.composeButton.click();
-  await ComposePage.createEmail();
-  await ComposePage.draftsFolderButton.click();
+When(/^I click the Mail button$/, async () => {
+  await homePage.mailButton.click();
 });
 
-Then(/^I should see this email in the Drafts folder$/, async () => {
-  await expect(await DraftsPage.draftEmail).toExist();
+Then(/^I should see an Inbox page with Compose button$/, async () => {
+  await expect(inboxPage.composeButton).toExist();
 });
 
-Given(/^I am on the Drafts page$/, async () => {
-  expectChai(await browser.getUrl()).to.be.equal('https://mail.yahoo.com/d/folders/3');
+// Scenario 05.
+Given(/^I am on the Inbox page as an authorized user$/, async () => {
+  await inboxPage.open('https://mail.yahoo.com/d/folders/1');
+  await loginPage.login();
 });
 
-When(/^I open the created draft$/, async () => {
-  await DraftsPage.draftEmailList.click();
-  await expect(await EditPage.emailAddress).toExist();
-  await expect(await EditPage.subject).toExist();
-  await expect(await EditPage.body).toExist();
+When(/^I click the Compose button$/, async () => {
+  await inboxPage.composeButton.click();
+});
+
+Then(/^I should see a Compose page with Address, Subject and Body fields$/, async () => {
+  await expect(composePage.inputAddressField).toExist();
+  await expect(composePage.inputSubjectField).toExist();
+  await expect(composePage.inputBodyField).toExist();
+});
+
+// Scenario 06.
+Given(/^I am on the Compose page as an authorized user$/, async () => {
+  await composePage.open('https://mail.yahoo.com/d/compose/');
+  await loginPage.login();
+});
+
+When(/^I fill the Address field with 'test1234512345@yopmail.com'$/, async () => {
+  await composePage.inputAddressField.setValue('test1234512345@yopmail.com');
+});
+
+When(/^I fill the Subject field with 'The email testing!'$/, async () => {
+  await composePage.inputSubjectField.setValue('The email testing!');
+});
+
+When(/^I fill the Body field with 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'$/, async () => {
+  await composePage.inputBodyField.setValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+});
+
+When(/^I click the Drafts folder button$/, async () => {
+  await composePage.draftsFolderButton.click();
+});
+
+Then(/^I should see the created draft in the Drafts folder$/, async () => {
+  await expect(draftsPage.draftEmailList).toExist();
+});
+
+// Scenario 07.
+Given(/^I am on the Drafts page as an authorized user$/, async () => {
+  await draftsPage.open('https://mail.yahoo.com/d/folders/3');
+  await loginPage.login();
+});
+
+When(/^I click on the created draft$/, async () => {
+  await draftsPage.draftEmailList.click();
 });
 
 Then(/^I should verify its content$/, async () => {
-  expectChai(await EditPage.emailAddress.getText()).to.be.equal('test1234512345@yopmail.com');
-  expectChai(await EditPage.subject.getValue()).to.be.equal('The email testing!');
-  expectChai(await EditPage.body.getText()).to.be.equal('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  await expect(await editPage.emailAddress).toHaveText('test1234512345@yopmail.com');
+  await expect(await editPage.subject).toHaveValue('The email testing!');
+  await expect(await editPage.body).toHaveText('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
 });
 
-Given(/^I am on the Edit page of the draft$/, async () => {
-  expectChai(await browser.getUrl()).to.include('https://mail.yahoo.com/d/3/edit');
+// Scenario 08.
+When(/^I click the Send button$/, async () => {
+  await editPage.sendButton.click();
 });
 
-When(/^I send the draft email$/, async () => {
-  await EditPage.sendButton.click();
+Then(/^I should see that the draft has removed from the Drafts folder$/, async () => {
+  expectChai(await draftsPage.emptyDraftFolder.isDisplayed()).to.be.equal(true);
 });
 
-Then(/^I should verify that draft email removed from the Draft folder$/, async () => {
-  expectChai(await DraftsPage.emptyDraftFolder.isDisplayed()).to.be.equal(true);
+// Scenario 09.
+When(/^I click the Sent folder button$/, async () => {
+  await draftsPage.sentFolderButton.click();
 });
 
-Given(/^I am in the Drafts folder$/, async () => {
-  expectChai(await browser.getUrl()).to.be.equal('https://mail.yahoo.com/d/folders/3');
+Then(/^I should see the sent email in the Sent folder$/, async () => {
+  await expect(await sentPage.sentEmail).toExist();
 });
 
-When(/^I open the Sent folder$/, async () => {
-  await DraftsPage.sentFolderButton.click();
+// Scenario 10.
+When(/^I open the sent email$/, async () => {
+  await sentPage.sentEmail.click();
 });
 
-Then(/^I should see the sent email$/, async () => {
-  await expect(await SentPage.sentEmail).toExist();
+Then(/^I expect email matches pattern "(.*)" on page$/, (regex) => {
+  const actualEmailOfReceiver = sentPage.actualEmailOfReceiver.getText();
+  const pattern = new RegExp(regex);
+  const isMatch = pattern.test(actualEmailOfReceiver);
+  expectChai(isMatch).to.be.equal(true);
 });
 
-Given(/^I am in the Sent folder$/, async () => {
-  expectChai(await browser.getUrl()).to.be.equal('https://mail.yahoo.com/d/folders/2');
+// Scenario 11.
+When(/^I hover on the profile icon$/, async () => {
+  await sentPage.profileItem.moveTo();
 });
 
-When(/^I logout from the mailbox account$/, async () => {
-  await SentPage.profileItem.moveTo();
-  await SentPage.logoutButton.waitForDisplayed();
-  await SentPage.logoutButton.click();
+When(/^I click the Sign Out button$/, async () => {
+  await sentPage.logoutButton.waitForDisplayed();
+  await sentPage.logoutButton.click();
 });
 
 Then(/^I should see the Start page$/, async () => {
-  await expect(await StartPage.searchInput).toExist();
+  await expect(await startPage.loginButton).toExist();
 });

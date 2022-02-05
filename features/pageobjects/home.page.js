@@ -1,7 +1,7 @@
 const Page = require('./page');
 const selectors = {
   labelOfProfile: '#ybarAccountMenuOpener',
-  mailButton: '#ybarMailLink'
+  mailButton: '#ybarMailLink',
 };
 
 class HomePage extends Page {

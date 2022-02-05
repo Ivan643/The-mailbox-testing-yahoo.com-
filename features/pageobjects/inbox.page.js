@@ -1,6 +1,6 @@
 const Page = require('./page');
 const selectors = {
-  composeButton: 'a[href*="/d/compose/"]'
+  composeButton: 'a[href*="/d/compose/"]',
 };
 
 class InboxPage extends Page {

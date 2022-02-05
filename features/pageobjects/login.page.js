@@ -2,7 +2,7 @@ const Page = require('./page');
 const selectors = {
   inputEmailField: '//*[@id="login-username"]',
   nextButton: '#login-signin',
-  inputPasswordField: '#login-passwd'
+  inputPasswordField: '#login-passwd',
 };
 
 class LoginPage extends Page {

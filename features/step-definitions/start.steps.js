@@ -1,7 +1,5 @@
 const { Given, When, Then } = require('@wdio/cucumber-framework');
-
-const expectChai = require('chai').expect;
-
+const { expect } = require('chai');
 const startPage = require('../pageobjects/start.page');
 
 Given(/^I am on the Start page as an unuthorized user$/, async () => {
@@ -13,9 +11,9 @@ When(/^I click the Sign In button$/, async () => {
 });
 
 Then(/^I should see a Login page$/, async () => {
-  expectChai(await browser.getUrl()).to.include('https://login.yahoo.com');
+  expect(await browser.getUrl()).to.include('https://login.yahoo.com');
 });
 
 Then(/^I should see the Start page$/, async () => {
-  await expect(await startPage.loginButton).toExist();
+  expect(await startPage.loginButton.isDisplayed()).is.equal(true);
 });

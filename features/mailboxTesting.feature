@@ -29,8 +29,10 @@ Scenario: 06. As a user, I can create an email
     Then I should see the created draft in the Drafts folder
 
 Scenario: 07. As a user, I can open the created draft and verify its content
-    When I click on the created draft
-    Then I should verify its content
+    When I open the created draft
+    Then I should verify that the Email Address is actually 'test1234512345@yopmail.com'
+    And I should verify that the Subject is actually 'The email testing!'
+    And I should verify that the Body is actually 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 
 Scenario: 08. As a user, I can send the created draft
     When I click the Send button
@@ -44,7 +46,11 @@ Scenario: 10. As a user, I can verify email matches pattern on the page
     When I open the sent email
     Then I expect email matches pattern "^([A-Za-z0-9_-])+\@[A-Za-z0-9_-]+\.[A-Za-z]{2,6}$" on page
 
-Scenario: 11. As a user, I can logout from the mailbox account
+Scenario: 11. As a user, I can delete the sent email
+    When I click the Delete button
+    Then I should see the informational message about the successful mail deleting
+
+Scenario: 12. As a user, I can logout from the mailbox account
     When I hover on the profile icon
     And I click the Sign Out button
     Then I should see the Start page

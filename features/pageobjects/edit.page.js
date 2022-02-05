@@ -3,7 +3,7 @@ const selectors = {
   emailAddress: 'div[data-test-id*="pill-text"]',
   subject: 'input[data-test-id*="compose-subject"]',
   body: '//*[@id="editor-container"]/div[1]/div/div',
-  sendButton: 'button[data-test-id*="compose-send-button"]'
+  sendButton: 'button[data-test-id*="compose-send-button"]',
 };
 
 class EditPage extends Page {

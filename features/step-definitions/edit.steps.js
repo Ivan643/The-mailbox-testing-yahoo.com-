@@ -1,11 +1,17 @@
-const { Given, When, Then } = require('@wdio/cucumber-framework');
-
+const { When, Then } = require('@wdio/cucumber-framework');
+const { expect } = require('chai');
 const editPage = require('../pageobjects/edit.page');
 
-Then(/^I should verify its content$/, async () => {
-  await expect(await editPage.emailAddress).toHaveText('test1234512345@yopmail.com');
-  await expect(await editPage.subject).toHaveValue('The email testing!');
-  await expect(await editPage.body).toHaveText('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+Then(/^I should verify that the Email Address is actually '(.*)'$/, async (emailAddressText) => {
+  expect(await editPage.emailAddress.getText()).is.equal(emailAddressText);
+});
+
+Then(/^I should verify that the Subject is actually '(.*)'$/, async (subjectText) => {
+  expect(await editPage.subject.getValue()).is.equal(subjectText);
+});
+
+Then(/^I should verify that the Body is actually '(.*)'$/, async (bodyText) => {
+  expect(await editPage.body.getText()).is.equal(bodyText);
 });
   
 When(/^I click the Send button$/, async () => {

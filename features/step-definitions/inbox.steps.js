@@ -1,20 +1,11 @@
 const { When, Then } = require('@wdio/cucumber-framework');
 const { expect } = require('chai');
-const loginPage = require('../pageobjects/login.page');
+const inboxPage = require('../pageobjects/inbox.page');
 
-When(/^I enter the mailbox name '(.*)'$/, async (mailboxName) => {
-  await loginPage.inputEmailField.setValue(mailboxName);
-  expect(await loginPage.inputEmailField.getValue()).is.equal(mailboxName);
-  await loginPage.nextButton.click();
+Then(/^I should see an Inbox page with Compose button$/, async () => {
+  expect(await inboxPage.composeButton.isDisplayed()).is.equal(true);
 });
   
-Then(/^I should see a Login page with a password field$/, async () => {
-  await loginPage.inputPasswordField.waitForDisplayed();
-  expect(await loginPage.inputPasswordField.isDisplayed()).is.equal(true);
-});
-  
-When(/^I enter the password '(.*)'$/, async (password) => {
-  await loginPage.inputPasswordField.setValue(password);
-  expect(await loginPage.inputPasswordField.getValue()).is.equal(password);
-  await loginPage.nextButton.click();
+When(/^I click the Compose button$/, async () => {
+  await inboxPage.composeButton.click();
 });
